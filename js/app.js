@@ -17,11 +17,11 @@
  * Define Global Variables
  *
  */
-
 let navbarList;
+let navbarListItems;
 let contentSections;
-const offset = 100;
 let last_known_scroll_position = 0;
+const offset = 100;
 
 window.addEventListener("DOMContentLoaded", () => {
   navbarList = document.querySelector("#navbar__list");
@@ -47,6 +47,7 @@ function createNavMenu() {
   }
 
   navbarList.appendChild(fragment);
+  navbarListItems = Array.from(navbarList.children);
 }
 
 function addScrollEventListener() {
@@ -67,17 +68,19 @@ function addClickEventListenerToMainMenu() {
 }
 
 function updateActiveContentSections(contentSectionsToUpdate) {
-  for (let contentSection of contentSectionsToUpdate) {
-    const contentStart = contentSection.offsetTop - offset;
-    const contentEnd = contentStart + contentSection.offsetHeight - offset;
+  for (let i = 0; i < contentSectionsToUpdate.length; i++) {
+    const contentStart = contentSectionsToUpdate[i].offsetTop - offset;
+    const contentEnd = contentStart + contentSectionsToUpdate[i].offsetHeight;
 
     if (
       last_known_scroll_position >= contentStart &&
       last_known_scroll_position <= contentEnd
     ) {
-      contentSection.classList.add("active");
+      contentSectionsToUpdate[i].classList.add("active");
+      navbarListItems[i].classList.add("active");
     } else {
-      contentSection.classList.remove("active");
+      contentSectionsToUpdate[i].classList.remove("active");
+      navbarListItems[i].classList.remove("active");
     }
   }
 }
